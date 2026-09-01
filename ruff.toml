@@ -1,0 +1,24 @@
+# Mirrors tldr-filter/backend/ruff.toml (same convention family). Package is llm_bridge.
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[lint]
+select = [
+    "E", "F", "W",   # pycodestyle + pyflakes
+    "I",             # isort
+    "N",             # pep8-naming
+    "UP",            # pyupgrade
+    "B",             # flake8-bugbear
+    "A",             # flake8-builtins
+    "C4",            # flake8-comprehensions
+    "SIM",           # flake8-simplify
+    "RUF",           # ruff-specific
+]
+ignore = []
+
+[lint.per-file-ignores]
+"tests/**" = ["S101"]  # asserts are fine in tests
+
+[lint.isort]
+known-first-party = ["llm_bridge"]

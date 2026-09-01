@@ -1,0 +1,38 @@
+[project]
+name = "llm-bridge"
+version = "0.1.0"
+description = "Provider-agnostic LLM port + adapters (claude-cli, codex-cli, vertex-gemini) shared across projects"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # Required, not optional: vertex_gemini.py imports it unconditionally at module load time.
+    # An adapter registry lazy enough to make this optional is a real design (entry points / extras),
+    # not something to fake with a try/except ImportError shim — deferred until a second adapter needs it.
+    "google-genai>=1,<2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<9",
+    "mypy>=1.14,<2",
+    "ruff>=0.9,<0.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llm_bridge"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+exclude = ['\.venv/', 'build/', 'dist/']
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false

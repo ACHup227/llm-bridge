@@ -1,0 +1,21 @@
+# CI gate — runs the SAME gate a developer runs locally (scripts/gate.sh) on every PR to main,
+# plus on main. Mirrors tldr-filter's ci.yml `gate` job; no database service here, no e2e job —
+# llm-bridge has no runtime service to boot, only the package + its fakes-only test suite.
+name: gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Run the project gate
+        run: bash scripts/gate.sh
